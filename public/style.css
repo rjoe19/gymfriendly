@@ -1,0 +1,20 @@
+h1 {
+  font-family:Lobster, Monospace;
+}
+
+p {
+  font-size: 16px;
+  font-family: Monospace;
+}
+
+.red-text {
+  color:red;
+}
+
+.glyphicon.glyphicon-remove-circle {
+    font-size: 100px;
+}
+
+.glyphicon.glyphicon-ok-circle {
+    font-size: 100px;
+}
