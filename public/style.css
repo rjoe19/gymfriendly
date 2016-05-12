@@ -12,9 +12,21 @@ p {
 }
 
 .glyphicon.glyphicon-remove-circle {
-    font-size: 100px;
+  font-size: 8.5vw;
+  color:orangered;
 }
 
 .glyphicon.glyphicon-ok-circle {
-    font-size: 100px;
+  font-size: 8.5vw;
+  color:orangered;
+}
+
+.glyphicon.glyphicon-user {
+  font-size: 8.5vw;
+  color:orangered;
+}
+
+.glyphicon.glyphicon-comment {
+  font-size: 8.5vw;
+  color:orangered;
 }

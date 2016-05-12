@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/rjoe19/gymfriendly#readme",
   "dependencies": {
-    "express": "^4.13.4"
+    "express": "^4.13.4",
+    "watchify": "^3.7.0"
   }
 }
