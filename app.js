@@ -1,12 +1,50 @@
-var express = require('express')
-var app = express()
+// Set default node environment to development
+process.env.NODE_ENV = process.env.NODE_ENV || 'development'
 
-app.get('/', function (req, res) {
-  res.send('Hello World, how ya doing')
-})
+var express = require('express');
+var path = require('path');
+var app = express();
+var fs = require('fs');
+var dotenv = require('dotenv')
+var bodyParser = require('body-parser'); //parses the body of the response
+var bcrypt = require('bcrypt');
+var uuid = require('node-uuid'); //creates unique id for user
+var session = require('express-session')
 
-app.use(express.static('public'));
+// create application/json parser
+var jsonParser = bodyParser.json()
+
+// create application/x-www-form-urlencoded parser
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
 
 
 
-app.listen(3000)
+// Define the port to run on
+app.set('port', 3000);
+
+//  set to handlebars view
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
+
+app.use(session({
+  secret: 'ssshhhhhh! Top secret!',
+  saveUninitialized: true,
+  resave: true,
+  db: knex
+}))
+
+
+// deliver files directly to the browser/serve public
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Listen for requests
+var server = app.listen(app.get('port'), function() {
+  var port = server.address().port;
+  console.log('Magic happens on port ' + port);
+});
