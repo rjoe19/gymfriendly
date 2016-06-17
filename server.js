@@ -4,6 +4,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development'
 var express = require('express');
 var path = require('path');
 var app = express();
+var exphbs  = require('express-handlebars');
 var fs = require('fs');
 var dotenv = require('dotenv')
 var bodyParser = require('body-parser'); //parses the body of the response
@@ -32,12 +33,12 @@ app.set('port', 3000);
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
-app.use(session({
-  secret: 'ssshhhhhh! Top secret!',
-  saveUninitialized: true,
-  resave: true,
-  db: knex
-}))
+// app.use(session({
+//   secret: 'ssshhhhhh! Top secret!',
+//   saveUninitialized: true,
+//   resave: true,
+//   db: knex
+// }))
 
 
 // deliver files directly to the browser/serve public

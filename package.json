@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "nodemon": "nodemon server.js",
+    "table": "node ./data/createdb.js"
   },
   "repository": {
     "type": "git",
@@ -26,8 +28,10 @@
     "express-handlebars": "^3.0.0",
     "express-session": "^1.13.0",
     "handlebars": "^4.0.5",
+    "knex": "^0.11.5",
     "node-uuid": "^1.4.7",
     "path": "^0.12.7",
+    "sqlite3": "^3.1.4",
     "watchify": "^3.7.0"
   }
 }
