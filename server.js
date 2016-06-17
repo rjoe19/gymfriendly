@@ -49,3 +49,65 @@ var server = app.listen(app.get('port'), function() {
   var port = server.address().port;
   console.log('Magic happens on port ' + port);
 });
+
+
+// SETUP ROUTING
+// ===============================================================================
+
+app.get('/', function (req, res, next) {
+    res.render('home', {layout: false});
+});
+
+app.get('/sign-up', function (req, res) {
+  res.render('sign-up')
+})
+
+app.post('/sign-up', urlencodedParser, function (req, res) {
+  console.log("this is the req", req.body)
+  var password = req.body.password
+  console.log("THIS IS THE PASSWORD FROM REQ.BODY", password)
+  bcrypt.genSalt(10, function (err, salt) {
+    bcrypt.hash(password, salt, function(err, hash) {
+      var toDb = req.body
+      toDb.password_hash = hash //creating new key password_has in todb object
+      toDb.id = uuid.v1()
+      delete toDb.password
+      console.log("HERE IS THE ID",toDb.id )
+      knex('users').insert(toDb).then(function (resp) {
+        console.log("THIS IS A RESPONSE FROM KNEX")
+        req.session.userId = toDb.id      //auth session id equates to db
+        res.redirect('/')
+      })
+    })
+  });
+
+})
+
+app.get('/sign-in', function (req, res) {
+  res.render('sign-in')
+})
+
+app.post('/sign-in', urlencodedParser, function (req, res) {
+  console.log(req.body)
+  var email = req.body.email
+  var password = req.body.password
+knex('users').where('email', email).then( function (resp) {
+  console.log("response from sql lite", resp)
+     bcrypt.compare(password, resp[0].password_hash, function(err, resp) {
+        if (resp === true) {
+          req.session.userId == resp[0].id   //auth session id equates to db
+           res.redirect('/')
+        }
+        else {
+         res.render('sign-in', {message: "Login failed, please try again"})
+         }
+        });
+      })
+ })
+
+ // Logout endpoint
+app.get('/sign-out', function (req, res) {
+    res.render('sign-out')
+  // Add logout code here
+  req.session.destroy()
+})

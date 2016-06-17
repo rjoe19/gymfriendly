@@ -13,7 +13,7 @@ var createSql = [
     'CREATE TABLE users (',
     '  id VARCHAR(255) NOT NULL,',
     '  name VARCHAR(255) NOT NULL,',
-    '  fav_training VARCHAR(255) NOT NULL,',
+    '  training_style VARCHAR(255) NOT NULL,',
     '  pref_diet VARCHAR(255) NOT NULL,',
     '  my_city VARCHAR(255) NOT NULL,',
     '  password_hash VARCHAR(255) NOT NULL',
