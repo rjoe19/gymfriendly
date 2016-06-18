@@ -12,6 +12,10 @@ var bcrypt = require('bcrypt');
 var uuid = require('node-uuid'); //creates unique id for user
 var session = require('express-session')
 
+
+//SETUP MIDDLEWARE
+//===========================================================================
+
 // create application/json parser
 var jsonParser = bodyParser.json()
 
@@ -25,6 +29,10 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 
+
+
+// SETUP SERVER AND PORT LISTENING
+//=========================================================================
 
 // Define the port to run on
 app.set('port', 3000);
@@ -66,15 +74,15 @@ app.get('/', function (req, res, next) {
     res.render('home', {layout: false});
 });
 
-app.get('/sign-up', function (req, res) {
-  res.render('sign-up')
-})
-
-app.post('/sign-up', urlencodedParser, function (req, res) {
-  console.log("this is the req", req.body)
-  var password = req.body.password
-  console.log("THIS IS THE PASSWORD FROM REQ.BODY", password)
-  bcrypt.genSalt(10, function (err, salt) {
+app.route('/sign-up')
+  .get(function (req, res) {
+    res.render('sign-up')
+  })
+  .post(urlencodedParser, function (req, res) {
+    console.log("this is the req", req.body)
+    var password = req.body.password
+    console.log("THIS IS THE PASSWORD FROM REQ.BODY", password)
+    bcrypt.genSalt(10, function (err, salt) {
     bcrypt.hash(password, salt, function(err, hash) {
       var toDb = req.body
       toDb.password_hash = hash //creating new key password_has in todb object
@@ -88,20 +96,19 @@ app.post('/sign-up', urlencodedParser, function (req, res) {
       })
     })
   });
-
 })
 
-app.get('/sign-in', function (req, res) {
-  res.render('sign-in')
-})
-
-app.post('/sign-in', urlencodedParser, function (req, res) {
-  console.log(req.body)
-  var email = req.body.email
-  var password = req.body.password
-knex('users').where('email', email).then( function (resp) {
-  console.log("response from sql lite", resp)
-     bcrypt.compare(password, resp[0].password_hash, function(err, resp) {
+app.route('/sign-in')
+  .get(function (req, res) {
+    res.render('sign-in')
+  })
+  .post(urlencodedParser, function (req, res) {
+    console.log(req.body)
+    var email = req.body.email
+    var password = req.body.password
+    knex('users').where('email', email).then( function (resp) {
+    console.log("response from sql lite", resp)
+     bcrypt.compare(password, resp[0].password_hash, function(err, resp){
         if (resp === true) {
           req.session.userId == resp[0].id   //auth session id equates to db
            res.redirect('/')
@@ -109,9 +116,9 @@ knex('users').where('email', email).then( function (resp) {
         else {
          res.render('sign-in', {message: "Login failed, please try again"})
          }
-        });
+       });
       })
- })
+    })
 
  // Logout endpoint
 app.get('/sign-out', function (req, res) {
