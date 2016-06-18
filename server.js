@@ -33,16 +33,24 @@ app.set('port', 3000);
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
-// app.use(session({
-//   secret: 'ssshhhhhh! Top secret!',
-//   saveUninitialized: true,
-//   resave: true,
-//   db: knex
-// }))
+var knex = require('knex')({
+  client: 'sqlite3',
+  connection: {
+    filename: './data/gymfriendly.sqlite'
+  },
+  useNullAsDefault: true
+})
+
+app.use(session({
+  secret: 'ssshhhhhh! Top secret!',
+  saveUninitialized: true,
+  resave: true,
+  db: knex
+}))
 
 
 // deliver files directly to the browser/serve public
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));
 
 // Listen for requests
 var server = app.listen(app.get('port'), function() {
