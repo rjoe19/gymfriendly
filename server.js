@@ -10,7 +10,7 @@ var dotenv = require('dotenv')
 var bodyParser = require('body-parser'); //parses the body of the response
 var bcrypt = require('bcrypt');
 var uuid = require('node-uuid'); //creates unique id for user
-var session = require('express-session')
+var session = require('express-session');
 
 
 //SETUP MIDDLEWARE
@@ -37,9 +37,21 @@ app.use(bodyParser.json())
 // Define the port to run on
 app.set('port', 3000);
 
+
 //  set to handlebars view
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
+
+// deliver files directly to the browser/serve public
+// app.use(express.static(path.join(__dirname, 'public')));
+// console.log((path.join(__dirname, 'PUBLIC')))
+
+app.use(session({
+  secret: 'ssshhhhhh! Top secret!',
+  saveUninitialized: true,
+  resave: true,
+  db: knex
+}))
 
 var knex = require('knex')({
   client: 'sqlite3',
@@ -49,21 +61,13 @@ var knex = require('knex')({
   useNullAsDefault: true
 })
 
-app.use(session({
-  secret: 'ssshhhhhh! Top secret!',
-  saveUninitialized: true,
-  resave: true,
-  db: knex
-}))
 
 
-// deliver files directly to the browser/serve public
-// app.use(express.static(path.join(__dirname, 'public')));
 
 // Listen for requests
 var server = app.listen(app.get('port'), function() {
   var port = server.address().port;
-  console.log('Magic happens on port ' + port);
+  console.log('Magic happens on port' + port);
 });
 
 
